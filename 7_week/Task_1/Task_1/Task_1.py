@@ -1,23 +1,70 @@
-# 239. Sliding Window Maximum
-# https://leetcode.com/problems/sliding-window-maximum/description/?envType=problem-list-v2&envId=sliding-window
+# 904. Fruit Into Baskets
+# https://leetcode.com/problems/fruit-into-baskets/description/?envType=problem-list-v2&envId=sliding-window&favoriteSlug=&difficulty=MEDIUM%2CHARD
 
 
-def maxSlidingWindow(nums, k):
-    max_window = 0
-    summa = 0
-    for i in range(0, k):
-        summa += nums[i]
-    max_window = summa
-    print(summa)
-    for i in range(1, len(nums) - k + 1):
-        summa -= nums[i - 1]
-        summa += nums[i + k - 1]
-        print(summa)
-        if summa >= max_window:
-            max_window = summa
-    return max_window
+def totalFruit(fruits):
+    max_fruits = 0
+    start = 0
+    end = 0
+    baskets = {}
+    if len(fruits) == 1:
+        return 1
+    while end <= len(fruits) - 1:
+        if fruits[end] not in baskets:
+            if len(baskets) < 2:
+                baskets[fruits[end]] = 1
+            else:
+                if sum(baskets.values()) >= max_fruits:
+                    max_fruits = sum(baskets.values())
+                while 1:
+                    baskets[fruits[start]] -= 1
+                    if baskets[fruits[start]] == 0:
+                        del baskets[fruits[start]]
+                        start += 1
+                        break
+                    start += 1
+                baskets[fruits[end]] = 1
+        else:
+            baskets[fruits[end]] += 1
+        if end == len(fruits) - 1:
+            if sum(baskets.values()) >= max_fruits:
+                max_fruits = sum(baskets.values())
+        end += 1
+    return max_fruits
 
 
-nums = [1, 3, -1, -3, 5, 3, 6, 7]
-k = 3
-print(maxSlidingWindow(nums, k))
+fruits = [0, 1, 2, 2]
+print(totalFruit(fruits))
+
+""" My solution in LeetCode
+class Solution:
+    def totalFruit(self, fruits: List[int]) -> int:
+        max_fruits = 0
+        start = 0
+        end = 0
+        baskets = {}
+        if len(fruits) == 1:
+            return 1
+        while end <= len(fruits) - 1:
+            if fruits[end] not in baskets:
+                if len(baskets) < 2:
+                    baskets[fruits[end]] = 1
+                else:
+                    if sum(baskets.values()) >= max_fruits:
+                        max_fruits = sum(baskets.values())
+                    while(1):
+                        baskets[fruits[start]] -= 1
+                        if baskets[fruits[start]] == 0:
+                            del baskets[fruits[start]]
+                            start += 1
+                            break
+                        start += 1
+                    baskets[fruits[end]] = 1
+            else:
+                baskets[fruits[end]] += 1
+            if end == len(fruits) - 1:
+                if sum(baskets.values()) >= max_fruits:
+                    max_fruits = sum(baskets.values())
+            end += 1
+        return max_fruits
+"""
