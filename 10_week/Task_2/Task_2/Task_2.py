@@ -42,3 +42,28 @@ root = TreeNode(
 )
 solution = Solution()
 print(solution.largestValues(root))
+
+""" My solution in LeetCode
+class Solution:
+    def largestValues(self, root: Optional[TreeNode]) -> List[int]:
+        res = []
+        level_arr = []
+        if not root:
+           return res
+        def moveLevels(nodes, level_arr):
+            if not nodes:
+                return
+            next_level = [] # nodes
+            level = [] # values
+            for node in nodes:
+                level.append(node.val)
+                if node.left:
+                    next_level.append(node.left)
+                if node.right:
+                    next_level.append(node.right)
+            res.append(max(level))
+            moveLevels(next_level, level_arr)
+        arr = [root]
+        moveLevels(arr, level_arr)
+        return res
+"""
